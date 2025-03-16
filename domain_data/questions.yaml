@@ -1,0 +1,21 @@
+questions:
+  - id: q1
+    question_text: "What specific technical skills are you looking for in a data scientist candidate?"
+    category: "Position Requirements"
+    subcategory: "Technical Skills"
+  - id: q2
+    question_text: "Can you tell me more about the company culture and work environment?"
+    category: "Company Information"
+    subcategory: "Culture"
+  - id: q3
+    question_text: "What would my day-to-day responsibilities look like in this position?"
+    category: "Position Requirements"
+    subcategory: "Role Details"
+  - id: q4
+    question_text: "What are the opportunities for career growth and advancement within the company?"
+    category: "Career Development"
+    subcategory: "Advancement"
+  - id: q5
+    question_text: "How would you describe the team I'd be working with?"
+    category: "Team Information"
+    subcategory: "Team Dynamics"

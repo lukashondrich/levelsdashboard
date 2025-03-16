@@ -1,0 +1,26 @@
+responses:
+  - question_id: q1
+    response_text: "For this data scientist role, we're looking for proficiency in Python, SQL, and experience with machine learning frameworks like TensorFlow or PyTorch. We also value expertise in data visualization, statistical analysis, and the ability to communicate complex findings to non-technical stakeholders. Experience with cloud platforms like AWS or Azure would be a plus."
+    risk_flags:
+      - "Accuracy"
+    risk_score: 0.15
+  - question_id: q2
+    response_text: "Our company prides itself on maintaining a collaborative and innovative environment where all employees are encouraged to share ideas. We have a flexible work policy with options for remote work, and we value work-life balance. Our culture emphasizes continuous learning, and we provide resources for professional development. We also host regular team-building activities and social events to foster a sense of community."
+    risk_flags:
+      - "Relevance"
+    risk_score: 0.20
+  - question_id: q3
+    response_text: "In this role, you would primarily be responsible for developing and implementing machine learning models, analyzing large datasets to extract insights, collaborating with product teams to understand business needs, creating data visualizations and dashboards, and presenting findings to stakeholders. You would also participate in regular team meetings and contribute to our data strategy planning."
+    risk_flags:
+      - "Completeness"
+    risk_score: 0.10
+  - question_id: q4
+    response_text: "We offer several paths for career advancement, including technical leadership roles and management opportunities. We support growth through mentorship programs, training budgets, and encourage attending industry conferences. Many of our senior team members started in entry-level positions, and we prioritize internal promotions when possible. Performance reviews are conducted semi-annually to discuss your career goals and development plans."
+    risk_flags:
+      - "Helpfulness"
+    risk_score: 0.25
+  - question_id: q5
+    response_text: "You would be joining a diverse team of 8 data professionals, including other data scientists, engineers, and analysts. The team is known for its collaborative approach and knowledge sharing. Team members have varied backgrounds, from statistics to computer science, bringing different perspectives to problem-solving. The team reports to our Director of Data Science and works closely with product managers and business stakeholders."
+    risk_flags:
+      - "Clarity"
+    risk_score: 0.30

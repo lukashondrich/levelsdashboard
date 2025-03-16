@@ -1,0 +1,16 @@
+insights:
+  - question_id: q1
+    reviewer: "Reviewer_A"
+    comment_text: "The response covers the technical skills well but could be more detailed about domain-specific knowledge requirements."
+  - question_id: q2
+    reviewer: "Reviewer_B"
+    comment_text: "Good overview of company culture, but the response feels somewhat generic and could include more specific examples."
+  - question_id: q3
+    reviewer: "Reviewer_A"
+    comment_text: "Comprehensive explanation of daily responsibilities. Consider adding information about project timelines and delivery expectations."
+  - question_id: q4
+    reviewer: "Reviewer_C"
+    comment_text: "The response about career advancement is helpful but lacks concrete examples of career paths previous employees have taken."
+  - question_id: q5
+    reviewer: "Reviewer_B"
+    comment_text: "The description of the team structure is clear, but the response would benefit from mentioning team communication styles and preferred collaboration tools."
