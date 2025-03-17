@@ -1,0 +1,9 @@
+PyYAML
+numpy
+streamlit
+matplotlib
+seaborn
+plotly
+pandas 
+typing  
+dataclasses  
