@@ -133,10 +133,17 @@ def create_radar_chart(values: List[float], categories: List[str], title: str):
     """Create a radar chart using Plotly for more consistent sizing and sleeker appearance."""
     fig = go.Figure()
     
+    # Close the loop by appending the first value and category to the end of the lists
+    values_closed = values.copy()
+    categories_closed = categories.copy()
+    if len(values) > 0:
+        values_closed.append(values[0])
+        categories_closed.append(categories[0])
+    
     # Add the trace for the radar chart
     fig.add_trace(go.Scatterpolar(
-        r=values,
-        theta=categories,
+        r=values_closed,
+        theta=categories_closed,
         fill='toself',
         name=title,
         line=dict(color='rgb(67, 147, 195)', width=2),
