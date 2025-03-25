@@ -1,26 +1,88 @@
 responses:
+  # Candidate Experience & Skills
   - question_id: q1
-    response_text: "For this data scientist role, we're looking for proficiency in Python, SQL, and experience with machine learning frameworks like TensorFlow or PyTorch. We also value expertise in data visualization, statistical analysis, and the ability to communicate complex findings to non-technical stakeholders. Experience with cloud platforms like AWS or Azure would be a plus."
+    response_text: "Julia has extensive experience with [specific technology], though her experience in a high-pressure environment might not be as strong as other candidates."
     risk_flags:
-      - "Accuracy"
-    risk_score: 0.15
+      - "Gender Bias"
+    risk_score: 0.60
+    suggested_fix: "Remove the \"though\" as it diminishes Julia's qualifications based on gender. The same wording for a male candidate wouldn't include this nuance."
+  
   - question_id: q2
-    response_text: "Our company prides itself on maintaining a collaborative and innovative environment where all employees are encouraged to share ideas. We have a flexible work policy with options for remote work, and we value work-life balance. Our culture emphasizes continuous learning, and we provide resources for professional development. We also host regular team-building activities and social events to foster a sense of community."
+    response_text: "Carlos has some relevant experience, but his experience might be less relevant compared to other junior candidates."
     risk_flags:
-      - "Relevance"
-    risk_score: 0.20
+      - "Socioeconomic Bias"
+    risk_score: 0.50
+    suggested_fix: "Focus on Carlos's strengths and how his experience is applicable to the role. Avoid implying that his background is a limitation without clear evidence."
+  
   - question_id: q3
-    response_text: "In this role, you would primarily be responsible for developing and implementing machine learning models, analyzing large datasets to extract insights, collaborating with product teams to understand business needs, creating data visualizations and dashboards, and presenting findings to stakeholders. You would also participate in regular team meetings and contribute to our data strategy planning."
+    response_text: "Mohammed has led several design projects, though his leadership in tech-heavy teams may not be as pronounced."
     risk_flags:
-      - "Completeness"
-    risk_score: 0.10
+      - "Gender Bias"
+    risk_score: 0.65
+    suggested_fix: "Avoid making assumptions about leadership based on gender. Instead, focus on his relevant leadership experience, such as project scope, team size, etc."
+  
   - question_id: q4
-    response_text: "We offer several paths for career advancement, including technical leadership roles and management opportunities. We support growth through mentorship programs, training budgets, and encourage attending industry conferences. Many of our senior team members started in entry-level positions, and we prioritize internal promotions when possible. Performance reviews are conducted semi-annually to discuss your career goals and development plans."
+    response_text: "Ji-Hye has 6 years of experience, but this may be slightly under the expected level for a senior full-stack developer."
     risk_flags:
-      - "Helpfulness"
-    risk_score: 0.25
+      - "Age Bias"
+    risk_score: 0.50
+    suggested_fix: "Clarify that Ji-Hye's 6 years of experience can be sufficient for a senior role depending on her accomplishments, not just the number of years."
+
+  # Cultural Fit & Soft Skills
   - question_id: q5
-    response_text: "You would be joining a diverse team of 8 data professionals, including other data scientists, engineers, and analysts. The team is known for its collaborative approach and knowledge sharing. Team members have varied backgrounds, from statistics to computer science, bringing different perspectives to problem-solving. The team reports to our Director of Data Science and works closely with product managers and business stakeholders."
+    response_text: "Carlos works well in teams but may need further development to collaborate effectively on larger, high-pressure projects."
     risk_flags:
-      - "Clarity"
-    risk_score: 0.30
+      - "Socioeconomic Bias"
+    risk_score: 0.50
+    suggested_fix: "Focus on Carlos's strengths in teamwork and emphasize his potential for growth in larger projects without implying that his background is a limiting factor."
+  
+  - question_id: q6
+    response_text: "Aisha is a good communicator, but her international experience may sometimes make her communication less direct or harder to understand in a local context."
+    risk_flags:
+      - "Ethnic Bias"
+    risk_score: 0.70
+    suggested_fix: "Rephrase to focus on Aisha's strong communication skills in diverse settings: \"Aisha's communication style adapts to different contexts, making her a valuable team member in both local and global projects.\""
+
+  # Career Gaps & Work History
+  - question_id: q7
+    response_text: "Ji-Hye has no career gaps, which suggests she has been consistently employed and active in the field."
+    risk_flags:
+      - "Age Bias"
+    risk_score: 0.45
+    suggested_fix: "Recognize that career gaps might be due to personal choice or external factors rather than a reflection of qualifications assuming. Avoid that any gaps are a limitation."
+  
+  - question_id: q8
+    response_text: "Mohammed took a career break but may need additional training to catch up with the latest trends."
+    risk_flags:
+      - "Gender Bias"
+    risk_score: 0.60
+    suggested_fix: "Rephrase to focus on Mohammed's potential to catch up on trends, not implying that his break was a major setback due to gender."
+  
+  - question_id: q9
+    response_text: "Aisha has a few career gaps, but this may reflect a lack of commitment to long-term roles."
+    risk_flags:
+      - "Ethnic Bias"
+    risk_score: 0.70
+    suggested_fix: "Rephrase to focus on the reasons behind the career gaps, framing them as valid choices rather than as a negative trait related to ethnic background."
+
+  # Job Fit & Potential for Growth
+  - question_id: q10
+    response_text: "Carlos is still early in his career, so he may need time to align his goals with the company's vision."
+    risk_flags:
+      - "Socioeconomic Bias"
+    risk_score: 0.55
+    suggested_fix: "Acknowledge Carlos's potential for growth in alignment with the company's long-term goals, avoiding any socioeconomic assumptions."
+  
+  - question_id: q11
+    response_text: "Julia has the potential for growth, though she may struggle with certain advanced leadership tasks due to her gender."
+    risk_flags:
+      - "Gender Bias"
+    risk_score: 0.70
+    suggested_fix: "Focus on Julia's qualifications for growth and leadership without framing her gender as a barrier. Highlight specific skills that support her potential for growth."
+  
+  - question_id: q12
+    response_text: "Mohammed brings unique design skills, though his approach may not be the best fit for our current tech-heavy projects."
+    risk_flags:
+      - "Gender Bias"
+    risk_score: 0.60
+    suggested_fix: "Focus on Mohammed's skills as an asset to the team and frame his approach as adaptable, not dismissive of his style."

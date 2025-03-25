@@ -1,21 +1,56 @@
 questions:
+  # Category 1: Candidate Experience & Skills
   - id: q1
-    question_text: "What specific technical skills are you looking for in a data scientist candidate?"
-    category: "Position Requirements"
+    question_text: "Does the candidate have experience in [specific technology/skill]?"
+    category: "Candidate Experience & Skills"
     subcategory: "Technical Skills"
   - id: q2
-    question_text: "Can you tell me more about the company culture and work environment?"
-    category: "Company Information"
-    subcategory: "Culture"
+    question_text: "How does the candidate's past experience align with the job requirements? Does the candidate's background (e.g., university attended, countries worked in) compare to others in similar roles?"
+    category: "Candidate Experience & Skills"
+    subcategory: "Experience Alignment"
   - id: q3
-    question_text: "What would my day-to-day responsibilities look like in this position?"
-    category: "Position Requirements"
-    subcategory: "Role Details"
+    question_text: "Does the candidate have leadership experience?"
+    category: "Candidate Experience & Skills"
+    subcategory: "Leadership"
   - id: q4
-    question_text: "What are the opportunities for career growth and advancement within the company?"
-    category: "Career Development"
-    subcategory: "Advancement"
+    question_text: "How many years of experience does the candidate have, and is this aligned with industry expectations for senior roles? Does the candidate's experience match the required level of expertise for this role? Does the candidate have experience in a high-pressure, high-revenue environment, or are they more accustomed to smaller teams? Has the candidate worked with diverse teams or international clients, and how might that influence their role in the company? Has the candidate demonstrated innovation or creativity in their previous roles, especially in problem-solving or project development?"
+    category: "Candidate Experience & Skills"
+    subcategory: "Experience Depth"
+  
+  # Category 2: Cultural Fit & Soft Skills
   - id: q5
-    question_text: "How would you describe the team I'd be working with?"
-    category: "Team Information"
-    subcategory: "Team Dynamics"
+    question_text: "How does the candidate handle teamwork and collaboration? What are the candidate's strengths in problem-solving?"
+    category: "Cultural Fit & Soft Skills"
+    subcategory: "Teamwork"
+  - id: q6
+    question_text: "How does the candidate's communication style align with the team's needs? How does the candidate's communication style align with leadership expectations for this role? Does the candidate's international experience influence their ability to relate to a diverse team?"
+    category: "Cultural Fit & Soft Skills"
+    subcategory: "Communication"
+  
+  # Category 3: Career Gaps & Work History
+  - id: q7
+    question_text: "How do career gaps impact the candidate's suitability for the role?"
+    category: "Career Gaps & Work History"
+    subcategory: "Gap Impact"
+  - id: q8
+    question_text: "What is the reason for the candidate's career break, and how does it affect their qualifications?"
+    category: "Career Gaps & Work History"
+    subcategory: "Break Reasons"
+  - id: q9
+    question_text: "Does the candidate have continuous employment or is there any notable gap? How do the candidate's work history and career gaps align with industry trends for their role? Does the candidate's work history demonstrate continuous learning and skill development?"
+    category: "Career Gaps & Work History"
+    subcategory: "Employment Continuity"
+  
+  # Category 4: Job Fit & Potential for Growth
+  - id: q10
+    question_text: "How does the candidate's background align with the long-term goals of the company?"
+    category: "Job Fit & Potential for Growth"
+    subcategory: "Alignment with Goals"
+  - id: q11
+    question_text: "Does the candidate demonstrate the potential for growth in this role?"
+    category: "Job Fit & Potential for Growth"
+    subcategory: "Growth Potential"
+  - id: q12
+    question_text: "What new skills could the candidate bring to the team, and how might they evolve within the role? Does the candidate have the potential to grow within the company, based on their previous roles and experience? How does the candidate's career trajectory align with the long-term goals of the company? What future challenges could the candidate handle well, given their experience and skill set?"
+    category: "Job Fit & Potential for Growth"
+    subcategory: "Skill Evolution"

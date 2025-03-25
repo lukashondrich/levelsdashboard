@@ -29,6 +29,7 @@ class LLMResponse:
     response_text: str
     risk_flags: List[str]
     risk_score: float
+    suggested_fix: Optional[str] = None  # Add this line
 
 @dataclass
 class Evaluation:
@@ -84,13 +85,18 @@ def load_llm_responses() -> List[LLMResponse]:
     
     responses = []
     for r in data['responses']:
+        # Include suggested_fix if it exists
+        suggested_fix = r.get('suggested_fix', None)
         responses.append(LLMResponse(
             question_id=r['question_id'],
             response_text=r['response_text'],
             risk_flags=r['risk_flags'],
-            risk_score=r['risk_score']
+            risk_score=r['risk_score'],
+            suggested_fix=suggested_fix  # Add this line
         ))
     return responses
+
+
 
 def load_evaluations() -> List[Evaluation]:
     """Load evaluations from evaluation_scores.yaml."""
@@ -280,10 +286,13 @@ def main():
                         fix_button = st.button(
                             "View Suggested Fix", 
                             key=f"fix_{response.question_id}", 
-                            help="View suggestions to reduce risk score (placeholder functionality)"
+                            help="View suggestions to reduce risk score"
                         )
                         if fix_button:
-                            st.info("Suggested fixes would be displayed here.")
+                            if hasattr(response, 'suggested_fix') and response.suggested_fix:
+                                st.info(response.suggested_fix)
+                            else:
+                                st.info("No suggested fix available for this response.")
                     st.divider()
     
     # Tab 4: Evaluation Score
