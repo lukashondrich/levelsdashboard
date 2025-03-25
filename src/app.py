@@ -62,7 +62,7 @@ class Question:
 
 @dataclass
 class LLMResponse:
-    """Class for storing LLM response data."""
+    """Class for storing LLM Outputs data."""
     question_id: str
     response_text: str
     risk_flags: List[str]
@@ -116,7 +116,7 @@ def load_questions() -> List[Question]:
     return questions
 
 def load_llm_responses() -> List[LLMResponse]:
-    """Load LLM responses from llm_responses.yaml."""
+    """Load LLM Outputss from llm_responses.yaml."""
     data = load_yaml_data("llm_responses.yaml")
     if not data or 'responses' not in data:
         return []
@@ -235,14 +235,14 @@ def main():
     
     # Create tabs (order is important)
     tabs = st.tabs([
-        "Onboarding/ODD", 
+        "Onboarding", 
         "Personas",
         "Question Library", 
-        "LLM Response", 
+        "LLM Outputs", 
         "Evaluation Score", 
     ])
     
-    # Tab 1: Onboarding/ODD (using the compliance wizard)
+    # Tab 1: Onboarding (using the compliance wizard)
     ai_act_compliance_wizard(tabs)
     
     # Tab 3: Question Library
@@ -298,12 +298,12 @@ def main():
                             st.info("Modification functionality would be implemented here.")
                 st.divider()
     
-    # Tab 3: LLM Response
+    # Tab 3: LLM Outputs
     with tabs[3]:
-        st.header("LLM Response")
+        st.header("LLM Outputs")
         
         if not llm_responses:
-            st.warning("No LLM responses found.")
+            st.warning("No LLM Outputss found.")
         else:
             for response in llm_responses:
                 # Find the corresponding question text
@@ -542,7 +542,7 @@ from datetime import datetime
 
 def ai_act_compliance_wizard(tabs):
     with tabs[0]:
-        st.header("Onboarding/ODD")
+        st.header("Onboarding")
         st.subheader("Compliance & ODD Assessment")
         
         # Add a button to enable wizard mode
