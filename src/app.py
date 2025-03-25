@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 # Set configuration
-st.set_page_config(layout="wide", page_title="Evaluation App Mockup")
+st.set_page_config(layout="wide", page_title="Level Ethics AI")
 sns.set_theme(style="whitegrid")
 
 @dataclass
@@ -224,7 +224,7 @@ def create_radar_chart(values: List[float], categories: List[str], title: str):
 
 def main():
     """Main function to run the Streamlit app."""
-    st.title("Evaluation App Mockup")
+    st.title("Level Ethics AI")
     
     # Load all data
     questions = load_questions()
@@ -236,18 +236,17 @@ def main():
     # Create tabs (order is important)
     tabs = st.tabs([
         "Onboarding/ODD", 
+        "Personas",
         "Question Library", 
         "LLM Response", 
         "Evaluation Score", 
-        "Contributor Insights",
-        "Personas"  # New tab added
     ])
     
     # Tab 1: Onboarding/ODD (using the compliance wizard)
     ai_act_compliance_wizard(tabs)
     
-    # Tab 2: Question Library
-    with tabs[1]:
+    # Tab 3: Question Library
+    with tabs[2]:
         st.header("Question Library")
         
         # Get unique categories and subcategories
@@ -300,7 +299,7 @@ def main():
                 st.divider()
     
     # Tab 3: LLM Response
-    with tabs[2]:
+    with tabs[3]:
         st.header("LLM Response")
         
         if not llm_responses:
@@ -344,7 +343,7 @@ def main():
                     st.divider()
     
     # Tab 4: Evaluation Score
-    with tabs[3]:
+    with tabs[4]:
         st.header("Evaluation Score")
         
         if not evaluations:
@@ -397,148 +396,121 @@ def main():
                         with col:
                             st.plotly_chart(fig, use_container_width=True)
     
-    # Tab 5: Contributor Insights
-    with tabs[4]:
-        st.header("Contributor Insights")
-        
-        if not insights:
-            st.warning("No contributor insights found.")
-        else:
-            for insight in insights:
-                question_text = next((q.question_text for q in questions if q.id == insight.question_id), "Question text not found")
-                with st.container():
-                    col1, col2 = st.columns([1, 3])
-                    with col1:
-                        st.write(f"**Question ID:** {insight.question_id}")
-                        st.write(f"**Reviewer:** {insight.reviewer}")
-                    with col2:
-                        st.write(f"**Question:** {question_text}")
-                        st.write(f"**Comment:** {insight.comment_text}")
-                st.divider()
     
-    # Tab 6: Personas
-    with tabs[5]:
+    # Add the Personas tab
+    with tabs[1]:
         st.header("Personas")
+        
+        # Add explanation text
+        st.markdown("We suggest these personas as **mental models** to conceptualize different user perspectives, pain points, and behaviors when interacting with the product.")
         
         if not personas:
             st.warning("No personas found.")
         else:
-            st.subheader("Filter Personas")
-            col1, col2 = st.columns(2)
+            # Create two columns for the top section
+            stats_col, filter_col = st.columns([1, 3])
             
-            with col1:
+            # Left column: Quick Stats
+            with stats_col:
+                st.markdown("### Quick Stats:")
+                st.markdown(f"- Total Personas: {len(personas)}")
+                st.markdown(f"- Female: {len([p for p in personas if p.gender == 'Female'])} (50%)")
+                st.markdown(f"- Male: {len([p for p in personas if p.gender == 'Male'])} (50%)")
+            
+            # Right column: Filter
+            with filter_col:
+                st.markdown("### Filter personas by category:")
+                # Add the filter dropdown
                 origins = ["All"] + sorted(list(set(p.origin for p in personas)))
-                selected_origin = st.selectbox("Filter by origin:", origins)
+                selected_origin = st.selectbox("", origins, label_visibility="collapsed")
             
-            with col2:
-                genders = ["All"] + sorted(list(set(p.gender for p in personas)))
-                selected_gender = st.selectbox("Filter by gender:", genders)
-            
-            # Apply filters
+            # Apply filter
             filtered_personas = personas
             if selected_origin != "All":
                 filtered_personas = [p for p in filtered_personas if p.origin == selected_origin]
-            if selected_gender != "All":
-                filtered_personas = [p for p in filtered_personas if p.gender == selected_gender]
             
-            st.subheader("Persona Profiles")
+            # Add Job Candidates heading
+            st.markdown("## Job Candidates")
             
-            total_personas = len(personas)
-            female_count = len([p for p in personas if p.gender == "Female"])
-            male_count = len([p for p in personas if p.gender == "Male"])
-            
-            st.markdown(f"""
-            **Quick Stats:**
-            - Total Personas: {total_personas}
-            - Female: {female_count} ({female_count/total_personas*100:.0f}%)
-            - Male: {male_count} ({male_count/total_personas*100:.0f}%)
-            """)
-            
-            # Display personas in a grid layout (2 per row)
-            for i in range(0, len(filtered_personas), 2):
-                cols = st.columns(2)
-                for j in range(2):
-                    if i + j < len(filtered_personas):
-                        persona = filtered_personas[i + j]
-                        with cols[j]:
-                            with st.container():
-                                st.markdown(f"""
-                                <div style="border:1px solid #ddd; border-radius:5px; padding:10px; margin-bottom:10px;">
-                                    <h3 style="color:#1E88E5;">{persona.name}</h3>
-                                    <p><strong>{persona.title}</strong></p>
-                                </div>
-                                """, unsafe_allow_html=True)
-                                
-                                st.markdown(f"**Gender:** {persona.gender}")
-                                st.markdown(f"**Origin:** {persona.origin}")
-                                
-                                with st.expander("Background"):
-                                    st.markdown(f"**Education:** {persona.education}")
-                                    st.markdown(f"**Experience:** {persona.experience}")
-                                
-                                with st.expander("Bias Analysis"):
-                                    bias_data = {k: v for k, v in persona.bias_metrics.items() if k != 'other_bias'}
-                                    if bias_data:
-                                        fig = go.Figure()
-                                        for bias_type, value in bias_data.items():
-                                            display_name = ' '.join(bias_type.split('_')).title()
-                                            color = "green" if value < 0.3 else "orange" if value < 0.6 else "red"
-                                            fig.add_trace(go.Bar(
-                                                x=[value],
-                                                y=[display_name],
-                                                orientation='h',
-                                                marker=dict(color=color),
-                                                name=display_name
-                                            ))
-                                        fig.update_layout(
-                                            title="Bias Metrics",
-                                            xaxis_title="Score",
-                                            yaxis_title="Bias Type",
-                                            xaxis=dict(range=[0, 1]),
-                                            height=200,
-                                            margin=dict(l=20, r=20, t=40, b=20),
-                                            showlegend=False
-                                        )
-                                        st.plotly_chart(fig, use_container_width=True)
-                                
-                                with st.expander("Control Comparison"):
-                                    st.markdown(persona.control_comparison)
-                                
-                                with st.expander("Associated Questions"):
-                                    if persona.questions_associated:
-                                        for q_id in persona.questions_associated:
-                                            question_text = next((q.question_text for q in questions if q.id == q_id), "Question not found")
-                                            st.markdown(f"**{q_id}:** {question_text}")
-                                    else:
-                                        st.write("No questions associated with this persona.")
-                                
-                                if st.button("View Detailed Analysis", key=f"view_{persona.id}"):
-                                    st.session_state[f"selected_persona_{persona.id}"] = True
-                                
-                                if st.session_state.get(f"selected_persona_{persona.id}", False):
-                                    st.subheader(f"Detailed Analysis: {persona.name}")
-                                    persona_responses = []
-                                    for q_id in persona.questions_associated:
-                                        response = next((r for r in llm_responses if r.question_id == q_id), None)
-                                        if response:
-                                            persona_responses.append(response)
+            # Display each persona in a horizontal row format
+            for persona in filtered_personas:
+                with st.container():
+                    # Create a horizontal layout with three columns
+                    col1, col2, col3 = st.columns([2, 3, 5])
+                    
+                    # Column 1: Basic identification
+                    with col1:
+                        st.markdown(f"### {persona.name}")
+                        st.markdown(f"**{persona.title}**")
+                    
+                    # Column 2: Key demographic information
+                    with col2:
+                        st.markdown(f"**Gender:** {persona.gender}")
+                        st.markdown(f"**Nationality:** {persona.origin}")
+                        st.markdown(f"**Education:** {persona.education.split(' from ')[0]}")
+                        st.markdown(f"**Experience:** {' '.join(persona.experience.split('.')[:1])}")
+                    
+                    # Column 3: Expandable panels
+                    with col3:
+                        # Bias Analysis Panel
+                        with st.expander("Bias Analysis", expanded=False):
+                            # Create a horizontal bar chart for bias metrics
+                            bias_data = {k: v for k, v in persona.bias_metrics.items() if k != 'other_bias'}
+                            if bias_data:
+                                fig = go.Figure()
+                                for bias_type, value in bias_data.items():
+                                    # Format the bias_type for display
+                                    display_name = ' '.join(bias_type.split('_')).title()
                                     
-                                    if persona_responses:
-                                        for response in persona_responses:
-                                            question_text = next((q.question_text for q in questions if q.id == response.question_id), "Question not found")
-                                            st.markdown(f"**Question:** {question_text}")
-                                            st.markdown(f"**Response:** {response.response_text}")
+                                    # Define color based on value
+                                    color = "green" if value < 0.3 else "orange" if value < 0.6 else "red"
+                                    
+                                    fig.add_trace(go.Bar(
+                                        x=[value],
+                                        y=[display_name],
+                                        orientation='h',
+                                        marker=dict(color=color),
+                                        name=display_name
+                                    ))
+                                
+                                fig.update_layout(
+                                    xaxis_title="Score",
+                                    yaxis_title="Bias Type",
+                                    xaxis=dict(range=[0, 1]),
+                                    height=200,
+                                    margin=dict(l=20, r=20, t=20, b=20),
+                                    showlegend=False
+                                )
+                                
+                                st.plotly_chart(fig, use_container_width=True)
+                        
+                        # Control Comparison Panel
+                        with st.expander("Control Comparison", expanded=False):
+                            st.markdown(persona.control_comparison)
+                        
+                        # Associated Questions Panel
+                        with st.expander("Associated Questions", expanded=False):
+                            if persona.questions_associated:
+                                for q_id in persona.questions_associated:
+                                    question_text = next((q.question_text for q in questions if q.id == q_id), "Question not found")
+                                    st.markdown(f"**{q_id}:** {question_text}")
+                                    
+                                    # Get the associated response
+                                    response = next((r for r in llm_responses if r.question_id == q_id), None)
+                                    if response:
+                                        with st.container():
+                                            st.markdown("**Response:**")
+                                            st.markdown(f"_{response.response_text}_")
                                             st.markdown(f"**Risk Flags:** {', '.join(response.risk_flags)}")
+                                            
+                                            # Add suggested fix if available
                                             if hasattr(response, 'suggested_fix') and response.suggested_fix:
                                                 st.info(f"**Suggested Fix:** {response.suggested_fix}")
-                                            st.divider()
-                                    else:
-                                        st.write("No responses found for this persona.")
-                                    
-                                    if st.button("Close Analysis", key=f"close_{persona.id}"):
-                                        st.session_state[f"selected_persona_{persona.id}"] = False
-                                        st.experimental_rerun()
-
+                            else:
+                                st.write("No questions associated with this persona.")
+                
+                # Add a divider between personas
+                st.divider()
 
 
 
