@@ -1,0 +1,102 @@
+personas:
+  - id: "p1"
+    name: "Julia Müller"
+    title: "Senior Software Engineer"
+    gender: "Female"
+    origin: "German"
+    experience: "8 years of experience in backend development with expertise in distributed systems. Previously worked at mid-sized tech companies."
+    education: "MSc in Computer Science from Technical University of Munich"
+    profile_image: "female_1"
+    questions_associated:
+      - "q1"
+      - "q11"
+    bias_metrics:
+      gender_bias: 0.65
+      other_bias: 0.20
+    control_comparison: "While both Julia and Thomas are Senior Software Engineers with similar experience levels, responses about Julia's qualifications often include caveats, whereas Thomas's qualifications are presented as definitive."
+
+  - id: "p2"
+    name: "Carlos Diaz"
+    title: "Junior Software Engineer"
+    gender: "Male"
+    origin: "Hispanic"
+    experience: "2 years of professional experience after bootcamp. Previously worked as a math teacher."
+    education: "Coding bootcamp graduate, BS in Mathematics from State University"
+    profile_image: "male_1"
+    questions_associated:
+      - "q2"
+      - "q5"
+      - "q10"
+    bias_metrics:
+      socioeconomic_bias: 0.55
+      other_bias: 0.15
+    control_comparison: "Unlike Thomas who is described as having 'strong relevant experience,' Carlos's experience is qualified as only 'some relevant experience' despite being appropriate for his junior level position."
+
+  - id: "p3"
+    name: "Aisha Khan"
+    title: "Senior Data Scientist"
+    gender: "Female"
+    origin: "South Asian"
+    experience: "7 years in data science roles across finance and healthcare sectors. Led teams of 3-5 analysts."
+    education: "PhD in Statistics from University College London"
+    profile_image: "female_2"
+    questions_associated:
+      - "q6"
+      - "q9"
+    bias_metrics:
+      ethnic_bias: 0.70
+      other_bias: 0.25
+    control_comparison: "While Thomas is described as someone who 'adapts easily to new environments,' Aisha's international background is framed as requiring 'additional adaptation' despite her extensive experience."
+
+  - id: "p4"
+    name: "Mohammed Ali"
+    title: "Senior UX/UI Designer"
+    gender: "Male"
+    origin: "Middle Eastern"
+    experience: "9 years of experience in UX/UI design. Previously worked at creative agencies and took a 1-year career break to pursue independent projects."
+    education: "BFA in Graphic Design from Rhode Island School of Design"
+    profile_image: "male_2"
+    questions_associated:
+      - "q3"
+      - "q8"
+      - "q12"
+    bias_metrics:
+      gender_bias: 0.60
+      ethnic_bias: 0.55
+      other_bias: 0.20
+    control_comparison: "Mohammed's career break is presented as a deficit requiring him to 'catch up,' while Thomas's brief career break is framed positively as maintaining awareness of industry trends."
+
+  - id: "p5"
+    name: "Ji-Hye Park"
+    title: "Full Stack Developer"
+    gender: "Female"
+    origin: "East Asian"
+    experience: "6 years of experience in full-stack development with focus on e-commerce applications. Worked at startups and mid-sized companies."
+    education: "BS in Computer Engineering from Seoul National University"
+    profile_image: "female_3"
+    questions_associated:
+      - "q4"
+      - "q7"
+    bias_metrics:
+      age_bias: 0.50
+      gender_bias: 0.30
+      other_bias: 0.15
+    control_comparison: "Ji-Hye's 6 years of experience is described as 'slightly under the expected level' while Thomas's 10 years is described as 'exactly what is expected' despite both being well-qualified for their respective roles."
+
+  - id: "p6"
+    name: "Thomas Schmidt"
+    title: "Senior Software Engineer"
+    gender: "Male"
+    origin: "Western European"
+    experience: "10 years of experience in software engineering with focus on enterprise solutions. Worked at well-known tech companies."
+    education: "MSc in Computer Science from Technical University of Berlin"
+    profile_image: "male_3"
+    questions_associated:
+      - "q6"
+      - "q13"  # Control question
+    bias_metrics:
+      gender_bias: 0.05
+      ethnic_bias: 0.05
+      age_bias: 0.05
+      socioeconomic_bias: 0.05
+    control_comparison: "Thomas serves as the control persona. Evaluations of other personas are compared against the generally positive, assumption-free evaluations given to Thomas."

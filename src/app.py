@@ -13,6 +13,44 @@ import plotly.express as px
 st.set_page_config(layout="wide", page_title="Evaluation App Mockup")
 sns.set_theme(style="whitegrid")
 
+@dataclass
+class Persona:
+    """Class for storing persona data."""
+    id: str
+    name: str
+    title: str
+    gender: str
+    origin: str
+    experience: str
+    education: str
+    profile_image: str
+    questions_associated: List[str]
+    bias_metrics: Dict[str, float]
+    control_comparison: str
+
+def load_personas() -> List[Persona]:
+    """Load personas from personas.yaml."""
+    data = load_yaml_data("personas.yaml")
+    if not data or 'personas' not in data:
+        return []
+    
+    personas = []
+    for p in data['personas']:
+        personas.append(Persona(
+            id=p['id'],
+            name=p['name'],
+            title=p['title'],
+            gender=p['gender'],
+            origin=p['origin'],
+            experience=p['experience'],
+            education=p['education'],
+            profile_image=p['profile_image'],
+            questions_associated=p['questions_associated'],
+            bias_metrics=p['bias_metrics'],
+            control_comparison=p['control_comparison']
+        ))
+    return personas
+
 # Define dataclasses
 @dataclass
 class Question:
@@ -180,6 +218,7 @@ def create_radar_chart(values: List[float], categories: List[str], title: str):
     
     return fig
 
+# Update the main function to include the Personas tab
 def main():
     """Main function to run the Streamlit app."""
     st.title("Evaluation App Mockup")
@@ -189,6 +228,7 @@ def main():
     llm_responses = load_llm_responses()
     evaluations = load_evaluations()
     insights = load_insights()
+    personas = load_personas()  # Add this line
     
     # Create tabs
     tabs = st.tabs([
@@ -196,205 +236,162 @@ def main():
         "Question Library", 
         "LLM Response", 
         "Evaluation Score", 
-        "Contributor Insights"
+        "Contributor Insights",
+        "Personas"  # Add this tab
     ])
     
-
     # Call the wizard function for Tab 1
     ai_act_compliance_wizard(tabs)
-
     
-    # Tab 2: Question Library
-    with tabs[1]:
-        st.header("Question Library")
-        
-        # Get unique categories and subcategories
-        categories = ["All"] + sorted(list(set(q.category for q in questions)))
-        
-        # Create two columns for filters
-        filter_col1, filter_col2 = st.columns(2)
-        
-        # Category filter
-        with filter_col1:
-            selected_category = st.selectbox("Filter by category:", categories)
-        
-        # Filtered questions based on category
-        if selected_category == "All":
-            filtered_questions = questions
-            subcategories = ["All"]
-        else:
-            filtered_questions = [q for q in questions if q.category == selected_category]
-            subcategories = ["All"] + sorted(list(set(q.subcategory for q in filtered_questions)))
-        
-        # Subcategory filter (only show if a specific category is selected)
-        with filter_col2:
-            if selected_category != "All":
-                selected_subcategory = st.selectbox("Filter by subcategory:", subcategories)
-                if selected_subcategory != "All":
-                    filtered_questions = [q for q in filtered_questions if q.subcategory == selected_subcategory]
-            else:
-                st.text("Select a category first")
-        
-        # Display questions
-        if not filtered_questions:
-            st.warning("No questions found with the selected filters.")
-        else:
-            for question in filtered_questions:
-                with st.container():
-                    col1, col2, col3 = st.columns([3, 1, 1])
-                    with col1:
-                        st.write(f"**{question.id}:** {question.question_text}")
-                    with col2:
-                        st.write(f"**Category:** {question.category}")
-                        st.write(f"**Subcategory:** {question.subcategory}")
-                    with col3:
-                        modify_button = st.button(
-                            "Modify", 
-                            key=f"modify_{question.id}", 
-                            help="Click to modify this question (placeholder functionality)"
-                        )
-                        if modify_button:
-                            st.info("Modification functionality would be implemented here.")
-                st.divider()
+    # [Other tab code remains the same...]
     
-    # Tab 3: LLM Response
-    with tabs[2]:
-        st.header("LLM Response")
+    # Add the Personas tab
+    with tabs[5]:
+        st.header("Personas")
         
-        if not llm_responses:
-            st.warning("No LLM responses found.")
+        if not personas:
+            st.warning("No personas found.")
         else:
-            for response in llm_responses:
-                # Find the corresponding question text
-                question_text = next((q.question_text for q in questions if q.id == response.question_id), "Question text not found")
-                
-                with st.container():
-                    st.subheader(f"Question ID: {response.question_id}")
-                    st.write(f"**Question:** {question_text}")
-                    
-                    col1, col2 = st.columns([3, 1])
-                    with col1:
-                        st.write(f"**Response:** {response.response_text}")
-                        st.write(f"**Risk Flags:** {', '.join(response.risk_flags)}")
-                    with col2:
-                        # Create a colored box for the risk score
-                        risk_percent = response.risk_score * 100
-                        color = "green" if risk_percent < 25 else "orange" if risk_percent < 50 else "red"
-                        st.markdown(
-                            f"""
-                            <div style="background-color:{color}; padding:10px; border-radius:5px; text-align:center; color:white;">
-                                <h3 style="margin:0;">Risk Score</h3>
-                                <h2 style="margin:0;">{risk_percent:.1f}%</h2>
-                            </div>
-                            """, 
-                            unsafe_allow_html=True
-                        )
-                        
-                        fix_button = st.button(
-                            "View Suggested Fix", 
-                            key=f"fix_{response.question_id}", 
-                            help="View suggestions to reduce risk score"
-                        )
-                        if fix_button:
-                            if hasattr(response, 'suggested_fix') and response.suggested_fix:
-                                st.info(response.suggested_fix)
-                            else:
-                                st.info("No suggested fix available for this response.")
-                    st.divider()
-    
-    # Tab 4: Evaluation Score
-    with tabs[3]:
-        st.header("Evaluation Score")
-        
-        if not evaluations:
-            st.warning("No evaluations found.")
-        else:
-            # First, collect all unique categories and their subcategories
-            all_categories = {}
-            for eval_item in evaluations:
-                for category, subcategory_scores in eval_item.scores.items():
-                    if category not in all_categories:
-                        all_categories[category] = set()
-                    for subcategory in subcategory_scores.keys():
-                        all_categories[category].add(subcategory)
+            # Add filtering capability
+            st.subheader("Filter Personas")
+            col1, col2 = st.columns(2)
             
-            # Convert sets to lists for ordered display
-            for category in all_categories:
-                all_categories[category] = sorted(list(all_categories[category]))
+            with col1:
+                # Get unique origins for filtering
+                origins = ["All"] + sorted(list(set(p.origin for p in personas)))
+                selected_origin = st.selectbox("Filter by origin:", origins)
             
-            # Aggregate scores across all evaluations
-            aggregated_scores = {}
-            for category, subcategories in all_categories.items():
-                aggregated_scores[category] = {subcategory: [] for subcategory in subcategories}
+            with col2:
+                # Get unique genders for filtering
+                genders = ["All"] + sorted(list(set(p.gender for p in personas)))
+                selected_gender = st.selectbox("Filter by gender:", genders)
             
-            # Collect all scores
-            for eval_item in evaluations:
-                for category, subcategory_scores in eval_item.scores.items():
-                    for subcategory, score in subcategory_scores.items():
-                        aggregated_scores[category][subcategory].append(score)
+            # Apply filters
+            filtered_personas = personas
+            if selected_origin != "All":
+                filtered_personas = [p for p in filtered_personas if p.origin == selected_origin]
+            if selected_gender != "All":
+                filtered_personas = [p for p in filtered_personas if p.gender == selected_gender]
             
-            # Calculate average scores
-            avg_scores = {}
-            for category, subcategory_scores in aggregated_scores.items():
-                avg_scores[category] = {}
-                for subcategory, scores in subcategory_scores.items():
-                    avg_scores[category][subcategory] = sum(scores) / len(scores) if scores else 0
+            # Display personas in a nice grid layout
+            st.subheader("Persona Profiles")
             
-            # Create columns for each category with explicit spacing
-            st.write("## Evaluation by Category")
+            # Calculate metrics
+            total_personas = len(personas)
+            female_count = len([p for p in personas if p.gender == "Female"])
+            male_count = len([p for p in personas if p.gender == "Male"])
             
-            # Use a container for better chart layout control
-            with st.container():
-                # Get the number of categories
-                num_categories = len(all_categories)
-                
-                # Calculate how many charts per row (max 3 for better sizing)
-                charts_per_row = min(3, num_categories)
-                rows_needed = (num_categories + charts_per_row - 1) // charts_per_row
-                
-                # Create rows of charts
-                for row in range(rows_needed):
-                    # Create columns for this row
-                    cols = st.columns(charts_per_row)
-                    
-                    # Fill columns with charts
-                    for col_idx in range(charts_per_row):
-                        chart_idx = row * charts_per_row + col_idx
-                        
-                        # Check if we still have charts to display
-                        if chart_idx < num_categories:
-                            # Get the category and subcategories
-                            category = list(all_categories.keys())[chart_idx]
-                            subcategories = all_categories[category]
-                            
-                            # Create radar chart
-                            with cols[col_idx]:
-                                values = [avg_scores[category][subcategory] for subcategory in subcategories]
-                                fig = create_radar_chart(values, subcategories, category)
-                                st.plotly_chart(fig, use_container_width=True)
-    
-    # Tab 5: Contributor Insights
-    with tabs[4]:
-        st.header("Contributor Insights")
-        
-        if not insights:
-            st.warning("No contributor insights found.")
-        else:
-            for insight in insights:
-                # Find the corresponding question text
-                question_text = next((q.question_text for q in questions if q.id == insight.question_id), "Question text not found")
-                
-                with st.container():
-                    col1, col2 = st.columns([1, 3])
-                    with col1:
-                        st.write(f"**Question ID:** {insight.question_id}")
-                        st.write(f"**Reviewer:** {insight.reviewer}")
-                    with col2:
-                        st.write(f"**Question:** {question_text}")
-                        st.write(f"**Comment:** {insight.comment_text}")
-                st.divider()
-
-
+            # Quick stats
+            st.markdown(f"""
+            **Quick Stats:**
+            - Total Personas: {total_personas}
+            - Female: {female_count} ({female_count/total_personas*100:.0f}%)
+            - Male: {male_count} ({male_count/total_personas*100:.0f}%)
+            """)
+            
+            # Display personas in a grid of cards
+            for i in range(0, len(filtered_personas), 2):
+                cols = st.columns(2)
+                for j in range(2):
+                    if i + j < len(filtered_personas):
+                        persona = filtered_personas[i + j]
+                        with cols[j]:
+                            with st.container():
+                                # Card style
+                                st.markdown(f"""
+                                <div style="border:1px solid #ddd; border-radius:5px; padding:10px; margin-bottom:10px;">
+                                    <h3 style="color:#1E88E5;">{persona.name}</h3>
+                                    <p><strong>{persona.title}</strong></p>
+                                </div>
+                                """, unsafe_allow_html=True)
+                                
+                                # Profile details
+                                st.markdown(f"**Gender:** {persona.gender}")
+                                st.markdown(f"**Origin:** {persona.origin}")
+                                
+                                with st.expander("Background"):
+                                    st.markdown(f"**Education:** {persona.education}")
+                                    st.markdown(f"**Experience:** {persona.experience}")
+                                
+                                with st.expander("Bias Analysis"):
+                                    # Create a horizontal bar chart for bias metrics
+                                    bias_data = {k: v for k, v in persona.bias_metrics.items() if k != 'other_bias'}
+                                    if bias_data:
+                                        fig = go.Figure()
+                                        for bias_type, value in bias_data.items():
+                                            # Format the bias_type for display
+                                            display_name = ' '.join(bias_type.split('_')).title()
+                                            
+                                            # Define color based on value
+                                            color = "green" if value < 0.3 else "orange" if value < 0.6 else "red"
+                                            
+                                            fig.add_trace(go.Bar(
+                                                x=[value],
+                                                y=[display_name],
+                                                orientation='h',
+                                                marker=dict(color=color),
+                                                name=display_name
+                                            ))
+                                        
+                                        fig.update_layout(
+                                            title="Bias Metrics",
+                                            xaxis_title="Score",
+                                            yaxis_title="Bias Type",
+                                            xaxis=dict(range=[0, 1]),
+                                            height=200,
+                                            margin=dict(l=20, r=20, t=40, b=20),
+                                            showlegend=False
+                                        )
+                                        
+                                        st.plotly_chart(fig, use_container_width=True)
+                                
+                                with st.expander("Control Comparison"):
+                                    st.markdown(persona.control_comparison)
+                                
+                                # Questions associated with this persona
+                                with st.expander("Associated Questions"):
+                                    if persona.questions_associated:
+                                        for q_id in persona.questions_associated:
+                                            question_text = next((q.question_text for q in questions if q.id == q_id), "Question not found")
+                                            st.markdown(f"**{q_id}:** {question_text}")
+                                    else:
+                                        st.write("No questions associated with this persona.")
+                                
+                                # Add button for detailed analysis
+                                if st.button("View Detailed Analysis", key=f"view_{persona.id}"):
+                                    st.session_state[f"selected_persona_{persona.id}"] = True
+                                
+                                # Show detailed analysis if button was clicked
+                                if st.session_state.get(f"selected_persona_{persona.id}", False):
+                                    st.subheader(f"Detailed Analysis: {persona.name}")
+                                    
+                                    # Get responses for questions associated with this persona
+                                    persona_responses = []
+                                    for q_id in persona.questions_associated:
+                                        response = next((r for r in llm_responses if r.question_id == q_id), None)
+                                        if response:
+                                            persona_responses.append(response)
+                                    
+                                    if persona_responses:
+                                        for response in persona_responses:
+                                            question_text = next((q.question_text for q in questions if q.id == response.question_id), "Question not found")
+                                            
+                                            st.markdown(f"**Question:** {question_text}")
+                                            st.markdown(f"**Response:** {response.response_text}")
+                                            st.markdown(f"**Risk Flags:** {', '.join(response.risk_flags)}")
+                                            
+                                            # Add suggested fix if available
+                                            if hasattr(response, 'suggested_fix') and response.suggested_fix:
+                                                st.info(f"**Suggested Fix:** {response.suggested_fix}")
+                                            
+                                            st.divider()
+                                    else:
+                                        st.write("No responses found for this persona.")
+                                    
+                                    # Close button
+                                    if st.button("Close Analysis", key=f"close_{persona.id}"):
+                                        st.session_state[f"selected_persona_{persona.id}"] = False
+                                        st.experimental_rerun()
 
 import streamlit as st
 import pandas as pd
