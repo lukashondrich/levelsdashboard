@@ -1,0 +1,6 @@
+[theme]
+primaryColor="#C348FA"
+backgroundColor="#FFFFFF"
+secondaryBackgroundColor="#F5F5F5"
+textColor="#000000"  # <-- black, instead of #2D00D1
+font="sans serif"

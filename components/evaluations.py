@@ -5,6 +5,7 @@ from utils.visualization import create_radar_chart
 def display_evaluations(tab):
     with tab:
         st.header("Evaluation Score")
+        st.markdown("Here’s a summary of the **evaluation scores** for the test questions.")
         evaluations = load_evaluations()
         if not evaluations:
             st.warning("No evaluations found.")

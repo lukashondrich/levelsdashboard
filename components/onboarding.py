@@ -4,9 +4,9 @@ from datetime import datetime
 def ai_act_compliance_wizard(tabs):
     with tabs[0]:
         st.header("Onboarding")
-        st.subheader("Compliance & ODD Assessment")
+        st.markdown("Fill in your **Operational Design Domain** (ODD). Complete a basic EU AI Act Compliance and ODD Assessment below to scope out your AI risks. ")
         if 'wizard_mode' not in st.session_state:
-            st.session_state.wizard_mode = False
+            st.session_state.wizard_mode = True
         wizard_mode = st.toggle("Enable Wizard Mode", value=st.session_state.wizard_mode)
         st.session_state.wizard_mode = wizard_mode
         

@@ -3,7 +3,9 @@ from utils.data_loader import load_questions
 
 def display_question_library(tab):
     with tab:
-        st.header("Question Library")
+        st.header("Question Library") 
+        st.markdown("Here’s a library of **test questions**. You can use to simulate real-world interactions with the LLM. ")
+
         questions = load_questions()
         categories = ["All"] + sorted(list(set(q.category for q in questions)))
         filter_col1, filter_col2 = st.columns(2)

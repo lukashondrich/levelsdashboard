@@ -4,6 +4,7 @@ from utils.data_loader import load_llm_responses, load_questions
 def display_llm_responses(tab):
     with tab:
         st.header("LLM Outputs")
+        st.markdown("The LLM’s **outputs** to the test questions are listed below.")
         responses = load_llm_responses()
         questions = load_questions()
         if not responses:
